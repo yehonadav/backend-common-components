@@ -3,7 +3,6 @@ export * from './getEventCookies';
 export * from './getEventFilledPathParameter';
 export * from './getEventHeader';
 export * from './getEventIp';
-export * from './getEventIdHeader';
 export * from './getEventOptionalPathParameter';
 export * from './getEventOwnerHeader';
 export * from './getEventPathAccountId';

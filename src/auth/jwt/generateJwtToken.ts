@@ -1,6 +1,6 @@
 import jwt, {SignOptions} from 'jsonwebtoken';
 import {AccountsDocument} from "../../models/accounts/accounts";
-import {getEnvironmentVariable} from "application-common-components";
+import {JWT_SECRET} from "../variables/JWT_SECRET";
 
 export interface IJwtTokenDTO {
   sub?: string;
@@ -11,8 +11,6 @@ export interface IJwtTokenDTO {
 export const jwtOptions:SignOptions = {
   expiresIn: '15m'
 }
-
-const JWT_SECRET = getEnvironmentVariable('JWT_SECRET');
 
 export function generateJwtToken(account:AccountsDocument):string {
   const payload: IJwtTokenDTO = {
