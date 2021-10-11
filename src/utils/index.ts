@@ -2,7 +2,6 @@ export * from './dynamono';
 export * from './emailHandler';
 export * from './eventGetters';
 export * from './http';
-export * from './scripts';
 export * from './allowedCorsList';
 export * from './allowedHeadersList';
 export * from './ApiError';
