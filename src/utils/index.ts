@@ -18,3 +18,4 @@ export * from './phoneValidation';
 export * from './randomTokenString';
 export * from './SMSService';
 export * from './validateRequest';
+export * from './deleteS3Object';
