@@ -34,7 +34,9 @@
     "mongoose": "^5.9.10",
     "nanoid": "^3.1.23",
     "nodemailer": "^6.5.0",
-    "recaptcha-verify": "^0.1.1"
+    "recaptcha-verify": "^0.1.1",
+    "@types/serverless": "^1.78.38",
+    "serverless": "^2.35.0"
   },
   "peerDependencies": {},
   "devDependencies": {
@@ -72,7 +74,6 @@
     "istanbul": "^0.4.5",
     "lambda-tester": "^4.0.1",
     "nyc": "^15.0.1",
-    "serverless": "^2.35.0",
     "serverless-apigw-binary": "^0.4.4",
     "serverless-disable-functions": "^0.1.0",
     "serverless-domain-manager": "^5.1.0",
