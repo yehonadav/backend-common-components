@@ -8,7 +8,7 @@ export const getEventHeader = (event: LambdaEvent, header: string): string => {
   if (!headerValue)
     throw apiError({
       statusCode: statusCode.badRequest,
-      message: `missing header ${header} value`,
+      message: `missing '${header}' header`,
     });
 
   return headerValue
