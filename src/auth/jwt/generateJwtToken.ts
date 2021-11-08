@@ -9,7 +9,7 @@ export interface IJwtTokenDTO {
 }
 
 export const jwtOptions:SignOptions = {
-  expiresIn: '15m'
+  expiresIn: process.env.JWT_EXPIRES_IN || '15m'
 }
 
 export function generateJwtToken(account:AccountsDocument):string {
