@@ -1,4 +1,4 @@
-import mongoose, {Mongoose, Model} from 'mongoose';
+import mongoose, { Mongoose, Model, ConnectOptions } from 'mongoose'
 import {getEnvironmentVariables} from "application-common-components";
 
 const [
@@ -23,23 +23,25 @@ export let databaseConnection:Mongoose;
 
 export const isDatabaseConnected = () => databaseConnection !== undefined;
 
+export const databaseConnectOptions:ConnectOptions = {
+  dbName: DB_NAME,
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+
+  autoIndex: false,
+  useCreateIndex: true,
+
+  // use MongoDB driver's instead of mongoose
+  useFindAndModify: false,
+
+  // we'll see when we need this
+  // maxIdleTimeMS: 10000,
+  // socketTimeoutMS: 10000,
+  // connectTimeoutMS: 10000,
+}
+
 export const connectToDatabase = () => {
-  return mongoose.connect(DB_URI, {
-    dbName: DB_NAME,
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-
-    // not sure this is needed every time we open a connection...
-    useCreateIndex: true,
-
-    // use MongoDB driver's instead of mongoose
-    useFindAndModify: false,
-
-    // we'll see when we need this
-    // maxIdleTimeMS: 10000,
-    // socketTimeoutMS: 10000,
-    // connectTimeoutMS: 10000,
-  }).then(db => {
+  return mongoose.connect(DB_URI, databaseConnectOptions).then(db => {
     databaseConnection = db;
     return db;
   });
