@@ -1,5 +1,5 @@
 import {safeStringify} from "@yehonadav/safestringify";
-import {JsonObject} from "../../types";
+import { JsonObject } from 'application-common-components'
 
 interface HttpBase {
   headers?: JsonObject;
