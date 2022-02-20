@@ -25,14 +25,8 @@ export const isDatabaseConnected = () => databaseConnection !== undefined;
 
 export const databaseConnectOptions:ConnectOptions = {
   dbName: DB_NAME,
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
 
   autoIndex: false,
-  useCreateIndex: true,
-
-  // use MongoDB driver's instead of mongoose
-  useFindAndModify: false,
 
   // we'll see when we need this
   // maxIdleTimeMS: 10000,
