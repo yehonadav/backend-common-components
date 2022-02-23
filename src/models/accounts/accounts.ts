@@ -5,10 +5,11 @@ import {accountRoleDbScheme} from "application-common-components";
 
 export type AccountsDocument = Document & AccountDTO;
 
-const accountsSchema = new Schema({
-  email: { type: String, unique: true, required: true },
+export const accountsSchema = new Schema({
+  email: { type: String, trim: true, index: true, unique: true, required: true },
   phone: { type: String, default: '' },
   passwordHash: { type: String },
+  username: { type: String, trim: true, index: true, unique: true, sparse: true },
 
   googleId: String,
 

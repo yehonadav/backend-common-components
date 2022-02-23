@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@aws/dynamodb-expressions": "^0.7.3",
-    "application-common-components": "^1.0.7",
+    "application-common-components": "^1.0.8",
     "@yehonadav/safestringify": "^1.0.2",
     "@yehonadav/statuscodes": "^1.0.6",
     "@yehonadav/timeunit": "^1.0.3",
