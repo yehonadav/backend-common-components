@@ -1,5 +1,4 @@
-import {addModelToDatabase} from "../mongoose-db";
-import {Schema, Document, models, model, Model} from 'mongoose';
+import { Schema, Document, Connection, Model } from 'mongoose';
 import {AccountDTO, IsVerified} from "application-common-components";
 import {accountRoleDbScheme} from "application-common-components";
 
@@ -52,9 +51,13 @@ accountsSchema.set('toJSON', {
     }
 });
 
-// Note: OverwriteModelError: Cannot overwrite `Accounts` model once compiled. error
-export const accountDB: Model<AccountsDocument> = (models.accounts ||
-  model<AccountsDocument>('accounts', accountsSchema)
-);
+export const accountsCollectionName = 'accounts';
 
-addModelToDatabase(accountDB);
+export const createAccountsModel = (conn:Connection):Model<AccountsDocument> => {
+  // Note: OverwriteModelError: Cannot overwrite `Accounts` model once compiled. error
+  return (
+    conn.models.accounts
+    ||
+    conn.model<AccountsDocument>(accountsCollectionName, accountsSchema)
+  );
+}

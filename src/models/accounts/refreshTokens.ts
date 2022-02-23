@@ -1,8 +1,5 @@
-// mandatory for every model to ensure instantiation
-import "../mongoose-db";
-
-import {Schema, Document, models, model} from 'mongoose';
-import {accountDB} from "./accounts";
+import { Schema, Document, Connection, Model } from 'mongoose'
+import { accountsCollectionName } from './accounts'
 
 export type RefreshTokensDocument = Document & {
   account: Schema.Types.ObjectId;
@@ -17,9 +14,9 @@ export type RefreshTokensDocument = Document & {
   isActive: boolean;
 };
 
-const refreshTokensSchema = new Schema({
-  account: { type: Schema.Types.ObjectId, ref: accountDB.collection.name, required: true},
-  token: { type: String, required: true, unique: true },
+export const refreshTokensSchema = new Schema({
+  account: { type: Schema.Types.ObjectId, ref: accountsCollectionName, required: true, index: true },
+  token: { type: String, required: true, unique: true, index: true },
   expires: Date,
   created: { type: Date, default: Date.now },
   createdByIp: String,
@@ -38,6 +35,11 @@ refreshTokensSchema.virtual('isActive').get(function () {
   return !this.revoked && !this.isExpired;
 });
 
-export const refreshTokenDB = (models.refreshToken ||
-  model<RefreshTokensDocument>('refreshToken', refreshTokensSchema)
-);
+export const createRefreshTokensModel = (conn:Connection):Model<RefreshTokensDocument> => {
+  // Note: OverwriteModelError: Cannot overwrite `Accounts` model once compiled. error
+  return (
+    conn.models.refreshToken
+    ||
+    conn.model<RefreshTokensDocument>('refreshToken', refreshTokensSchema)
+  );
+}
