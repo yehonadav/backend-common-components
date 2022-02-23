@@ -3,32 +3,30 @@ import {unauthorizedError} from "../errors/unauthorizedError";
 import {getAuthorizationToken} from "../utils/getAuthorizationToken";
 import {getJwtPayload} from "../jwt/getJwtPayload";
 import {LambdaEvent} from "../../types";
+import { Model } from 'mongoose'
+import { AccountsDocument, RefreshTokensDocument } from '../../models'
 
 export interface IAuthorize {
   event: LambdaEvent;
   roles?: string[];
+  db: IAuthDB;
 }
 
-export interface ICreateAuthDbParams {
-  getAccountByIdAsync(id: string):Promise<{id:string; role:string;}|null>; // await accountDB.findById(jwtPayload.id)
-  getAccountRefreshTokensByAccountId(id: string):Promise<{token:string}[]>; // await refreshTokenDB.find({ account: account.id })
+export interface IAuthDB {
+  accounts: Model<AccountsDocument>;
+  refreshTokens: Model<RefreshTokensDocument>;
 }
 
-export const createAuthDBAsync = (
-  {
-    getAccountByIdAsync,
-    getAccountRefreshTokensByAccountId,
-  }:ICreateAuthDbParams) =>
-  async ({event, roles = []}:IAuthorize) => {
+export const authDBAsync = async ({db, event, roles = []}:IAuthorize) => {
   const token = getAuthorizationToken(event);
   const jwtPayload = getJwtPayload(token);
 
-  const account = await getAccountByIdAsync(jwtPayload.id);
+  const account = await db.accounts.findById(jwtPayload.id);
 
   if (!account)
     throw accountNotFoundError;
 
-  const refreshTokens = await getAccountRefreshTokensByAccountId(account.id);
+  const refreshTokens = await db.refreshTokens.find({ account: account.id });
 
   if (!account || (roles.length && !roles.includes(account.role)))
     // account no longer exists or role not authorized
