@@ -1,27 +1,23 @@
 import {accountNotFoundError} from "../errors/accountNotFoundError";
 import {unauthorizedError} from "../errors/unauthorizedError";
-import {getAuthorizationToken} from "../utils/getAuthorizationToken";
-import {getJwtPayload} from "../jwt/getJwtPayload";
 import {LambdaEvent} from "../../types";
 import { Model } from 'mongoose'
 import { AccountsDocument, RefreshTokensDocument } from '../../models'
-
-export interface IAuthorize {
-  event: LambdaEvent;
-  roles?: string[];
-  db: IAuthDB;
-}
+import { authJwt } from './authJwt'
 
 export interface IAuthDB {
   accounts: Model<AccountsDocument>;
   refreshTokens: Model<RefreshTokensDocument>;
 }
 
-export const authDBAsync = async ({db, event, roles = []}:IAuthorize) => {
-  const token = getAuthorizationToken(event);
-  const jwtPayload = getJwtPayload(token);
+export interface IAuthDbByJwtPayloadIdAsync {
+  jwtPayloadId: string;
+  roles?: string[];
+  db: IAuthDB;
+}
 
-  const account = await db.accounts.findById(jwtPayload.id);
+export const authDbByJwtPayloadIdAsync = async ({db, jwtPayloadId, roles = []}:IAuthDbByJwtPayloadIdAsync) => {
+  const account = await db.accounts.findById(jwtPayloadId);
 
   if (!account)
     throw accountNotFoundError;
@@ -34,7 +30,20 @@ export const authDBAsync = async ({db, event, roles = []}:IAuthorize) => {
 
   return {
     account,
-    jwtPayload,
     ownsToken: (token: any) => !!refreshTokens.find(x => x.token === token),
+  };
+}
+
+export interface IAuthorize {
+  event: LambdaEvent;
+  roles?: string[];
+  db: IAuthDB;
+}
+
+export const authDBAsync = async ({db, event, roles = []}:IAuthorize) => {
+  const jwtPayload = authJwt(event);
+  return {
+    jwtPayload,
+    ...authDbByJwtPayloadIdAsync({db, jwtPayloadId: jwtPayload.id, roles})
   };
 }
