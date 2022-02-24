@@ -1,6 +1,6 @@
 {
   "name": "backend-common-components",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Common components for serverless micro services",
   "author": "yehonadav",
   "license": "Apache-2.0",
