@@ -5,7 +5,7 @@ export type ObjectId = Types.ObjectId;
 
 export function objectId(id: string): ObjectId {
   try {
-    return Types.ObjectId(id)
+    return new Types.ObjectId(id)
   } catch (e) {
     throw invalidIdError
   }
