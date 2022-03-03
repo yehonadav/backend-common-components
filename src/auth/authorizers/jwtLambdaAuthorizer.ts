@@ -1,7 +1,7 @@
 import {AuthResponse, Callback, Context, PolicyDocument} from "aws-lambda";
 import {APIGatewayTokenAuthorizerEvent} from "aws-lambda/trigger/api-gateway-authorizer";
 import {JwtPayload, verify} from "jsonwebtoken";
-import {JWT_SECRET} from "../variables/JWT_SECRET";
+import { getEnvironmentVariable } from 'application-common-components'
 
 export const generateLambdaAuthorizerPolicyDocument = (effect:string, methodArn:string):PolicyDocument => ({
   Version: "2012-10-17",
@@ -29,6 +29,8 @@ export const jwtLambdaAuthorizerHandler = (event:APIGatewayTokenAuthorizerEvent,
     return callback(null, "Unauthorized");
 
   let decoded: JwtPayload;
+
+  const JWT_SECRET = getEnvironmentVariable('JWT_SECRET');
 
   try {
     decoded = verify(token, JWT_SECRET, {algorithms: ['HS256'] }) as JwtPayload;

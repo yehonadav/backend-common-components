@@ -1,6 +1,6 @@
 import jwt, {SignOptions} from 'jsonwebtoken';
 import {AccountsDocument} from "../../models/accounts/accounts";
-import {JWT_SECRET} from "../variables/JWT_SECRET";
+import { getEnvironmentVariable } from 'application-common-components'
 
 export interface IJwtTokenDTO {
   sub?: string;
@@ -21,7 +21,7 @@ export function generateJwtToken(account:AccountsDocument):string {
 
   return jwt.sign(
     payload,
-    JWT_SECRET,
+    getEnvironmentVariable('JWT_SECRET'),
     jwtOptions,
   );
 }
