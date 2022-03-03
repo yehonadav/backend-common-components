@@ -1,6 +1,6 @@
 'use strict';
 
-import {aws} from "./aws";
+import { getAws } from './aws'
 import {SNS} from 'aws-sdk';
 
 export interface ISMSMessage {
@@ -13,6 +13,7 @@ export class SMSService {
   private SNS: SNS;
 
   constructor() {
+    const aws = getAws();
     this.SNS = new aws.SNS({ apiVersion: '2010-03-31' });
   }
 

@@ -1,5 +1,5 @@
 import {AsyncHandler} from "../utils/http/createHttpHandler";
-import {CORS} from "../utils/allowedCorsList";
+import {getCORS} from "../utils/allowedCorsList";
 
 export const addCorsToResponseMiddleware = (handler:AsyncHandler):AsyncHandler => async (
   event,
@@ -11,7 +11,7 @@ export const addCorsToResponseMiddleware = (handler:AsyncHandler):AsyncHandler =
 
   const origin = event.headers?.origin;
 
-  if (CORS.includes(origin)) {
+  if (getCORS().includes(origin)) {
     if (!response.headers)
       response.headers = {};
 

@@ -1,18 +1,23 @@
 import AWS from 'aws-sdk';
 import {getEnvironmentVariable} from "application-common-components";
 
-const accessKeyIdAWS = getEnvironmentVariable('accessKeyIdAWS');
-const secretAccessKeyAWS = getEnvironmentVariable('secretAccessKeyAWS');
+let aws:typeof AWS;
 
-const credentials = {
-  accessKeyId: accessKeyIdAWS,
-  secretAccessKey: secretAccessKeyAWS,
-};
+export const getAws = ():typeof AWS => {
+  if (!aws) {
+    const accessKeyIdAWS = getEnvironmentVariable('accessKeyIdAWS');
+    const secretAccessKeyAWS = getEnvironmentVariable('secretAccessKeyAWS');
 
-const region = "us-east-1";
+    const credentials = {
+      accessKeyId: accessKeyIdAWS,
+      secretAccessKey: secretAccessKeyAWS,
+    };
 
-AWS.config.credentials = credentials;
-AWS.config.region = region;
+    const region = "us-east-1";
 
-
-export const aws = AWS;
+    AWS.config.credentials = credentials;
+    AWS.config.region = region;
+    aws = AWS;
+  }
+  return aws;
+}
