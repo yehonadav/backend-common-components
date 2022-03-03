@@ -34,5 +34,3 @@ export class SMSService {
     return res.MessageId
   }
 }
-
-export const sms = new SMSService();
